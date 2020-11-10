@@ -183,6 +183,28 @@ function getContactsInParticularState(state) {
     return addressBook.filter(contact => contact.state == state);
 }
 
+function getContactsByProperty(property, addressBook) {
+    let contactsByPropertyMap = new Map();
+    if (property == "City") {
+        addressBook.forEach(contact => {
+            if (!contactsByPropertyMap.get(contact.city)) {
+                contactsByPropertyMap.set(contact.city, [contact]);
+            } else {
+                contactsByPropertyMap.get(contact.city).push(contact);
+            }
+        });
+    } else if (property == "State") {
+        addressBook.forEach(contact => {
+            if (!contactsByPropertyMap.get(contact.state)) {
+                contactsByPropertyMap.set(contact.state, [contact]);
+            } else {
+                contactsByPropertyMap.get(contact.state).push(contact);
+            }
+        });
+    }
+    return contactsByPropertyMap;
+}
+
 let addressBook = new Array();
 try {
     addContactToAddressBook(new Contact("Praket", "Parth", "Hauz Khas", "New Delhi", "Delhi",
@@ -224,3 +246,10 @@ let state = "Maharashtra";
 let contactsInParticularState = getContactsInParticularState(state);
 console.log("Contacts in " + state + ":");
 contactsInParticularState.forEach(contact => console.log(contact.toString()));
+
+let contactsByCity = getContactsByProperty("City", addressBook);
+console.log("Contacts By City: ")
+console.log(contactsByCity);
+let contactsByState = getContactsByProperty("State", addressBook);
+console.log("Contacts By State: ")
+console.log(contactsByState);
